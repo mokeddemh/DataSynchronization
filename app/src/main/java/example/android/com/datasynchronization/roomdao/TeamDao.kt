@@ -23,7 +23,7 @@ interface TeamDao {
     fun deleteTeam(team: Team)
 
     @Delete
-    fun deleteAllTeams(teams:List<Team>)
+    fun deleteTeams(teams:List<Team>)
 
 }
 
