@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         .setRecurring(false)
                         .setLifetime(Lifetime.FOREVER)
                         // Start between 60s and 120s
-                        .setTrigger(Trigger.executionWindow(30,40))
+                        .setTrigger(Trigger.executionWindow(60,120))
                         // Ignore if the a service with the same Tag is launched
                         .setReplaceCurrent(false)
                         // Linear retry
