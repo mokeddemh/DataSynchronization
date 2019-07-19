@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun scheduleSycn() {
         val constraints = Constraints.Builder().
                 setRequiredNetworkType(NetworkType.UNMETERED).
-               // setRequiresBatteryNotLow(true).
+                setRequiresBatteryNotLow(true).
                 build()
         val req= OneTimeWorkRequest.Builder (SyncService::class.java).
                 setConstraints(constraints).addTag("id1").
