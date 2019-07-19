@@ -1,7 +1,7 @@
 package example.android.com.datasynchronization
 
 import android.app.Application
-import example.android.com.datasynchronization.roomdatabase.RoomService
+import example.android.com.datasynchronization.roomdao.RoomService
 
 class App:Application(){
     override fun onCreate() {

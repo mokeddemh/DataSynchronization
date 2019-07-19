@@ -1,50 +1,61 @@
 package example.android.com.datasynchronization.service
 
-import com.firebase.jobdispatcher.JobParameters
-import com.firebase.jobdispatcher.JobService
+
+import android.annotation.SuppressLint
+import android.content.Context
+import androidx.work.ListenableWorker
+import androidx.work.WorkerParameters
+import androidx.work.impl.utils.futures.SettableFuture
+import com.google.common.util.concurrent.ListenableFuture
 import example.android.com.datasynchronization.entity.Team
 import example.android.com.datasynchronization.retrofit.RetrofitService
-import example.android.com.datasynchronization.roomdatabase.RoomService
+import example.android.com.datasynchronization.roomdao.RoomService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SyncService:JobService() {
+class SyncService(val ctx: Context, val workParamters: WorkerParameters):ListenableWorker(ctx, workParamters){
 
-    var  jobParameters:JobParameters? = null
+    lateinit var  future:SettableFuture<Result>
 
-    override fun onStartJob(job: JobParameters?): Boolean {
-        this.jobParameters = job
-        val teams = RoomService.appDataBase.getTeamDao().getTeams()
+    @SuppressLint("RestrictedApi")
+    override fun startWork(): ListenableFuture<Result> {
+
+        future = SettableFuture.create<Result>()
+        val teams = RoomService.appDataBase.getTeamDao().getTeamsToSynchronize()
         addTeams(teams)
-        return  true
+
+        return future
     }
 
-    override fun onStopJob(job: JobParameters?)= true
 
+
+    @SuppressLint("RestrictedApi")
 
     fun addTeams(teams:List<Team>) {
-
     val result = RetrofitService.endpoint.addTeams(teams)
-
     result.enqueue(object: Callback<String> {
 
         override fun onFailure(call: Call<String>?, t: Throwable?) {
 
-            jobFinished(jobParameters!!,true)
+          future.set(Result.retry())
+
+
         }
 
         override fun onResponse(call: Call<String>?, response: Response<String>?) {
 
             if(response?.isSuccessful!!) {
-                RoomService.appDataBase.getTeamDao().deleteTeams(teams)
-                jobFinished(jobParameters!!,false)
-
+                for (item in teams) {
+                    item.isSynchronized = 1
+                }
+               RoomService.appDataBase.getTeamDao().updateTeam(teams)
+               future.set(Result.success())
 
             }
             else
             {
-                jobFinished(jobParameters!!,true)
+               future.set(Result.retry())
             }
         }
 

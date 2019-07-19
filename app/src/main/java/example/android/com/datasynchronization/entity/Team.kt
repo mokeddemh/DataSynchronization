@@ -1,14 +1,14 @@
 package example.android.com.datasynchronization.entity
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "teams")
 data class Team(
-        @ColumnInfo(name = "team_name")
         var teamName:String,
-        var continent:String
+        var continent:String,
+       var isSynchronized:Int =0
 ) {
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "team_id")

@@ -1,22 +1,15 @@
 package example.android.com.datasynchronization
 
-import android.arch.persistence.room.Room
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.room.Room
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import example.android.com.datasynchronization.entity.Team
-import example.android.com.datasynchronization.retrofit.RetrofitService
-import example.android.com.datasynchronization.roomdatabase.AppDataBase
-import junit.framework.AssertionFailedError
+import example.android.com.datasynchronization.roomdao.AppDataBase
 import org.junit.After
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.Before
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
-import kotlin.concurrent.timerTask
 
 /**
  * Instrumented test, which will execute on an Android device.

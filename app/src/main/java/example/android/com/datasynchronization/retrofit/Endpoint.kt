@@ -8,6 +8,6 @@ import retrofit2.http.POST
 interface Endpoint {
 
     @POST("addteams")
-    fun addTeams(@Body teams:List<Team>):Call<String>
+    fun addTeams(@Body teams: List<Team>):Call<String>
 
 }
