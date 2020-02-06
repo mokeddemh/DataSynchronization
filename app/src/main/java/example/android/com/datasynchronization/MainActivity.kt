@@ -25,12 +25,6 @@ class MainActivity : AppCompatActivity() {
             editTextName.text.clear()
             editTextContinent.text.clear()
             scheduleSycn()
-
-
-
-
-
-
         }
 
     }
@@ -48,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val req= OneTimeWorkRequest.Builder (SyncService::class.java).
                 setConstraints(constraints).addTag("id1").
                 build()
-        val workManager = WorkManager.getInstance()
+        val workManager = WorkManager.getInstance(this)
         workManager.enqueueUniqueWork("work",ExistingWorkPolicy.REPLACE,req)
 
     }
